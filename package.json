@@ -8,6 +8,10 @@
     "build": "parcel build index.html"
   },
   "dependencies": {
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.1",
     "rxjs": "6.3.3"
   },
   "devDependencies": {
