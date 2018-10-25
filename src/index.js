@@ -15,28 +15,27 @@ const getData = () =>
     res.json()
   );
 
-const stock$ = Observable.create(observer => {
+const fetchStock$ = Observable.create(observer => {
+  //load the data how the data is fetched
+  observer.next(getData());
   setInterval(() => {
+    //fetch new data
     observer.next(getData());
   }, 10000);
 });
 
-stock$.pipe(
-  map(data => {
-    return from(data);
-  })
-);
+const stock$ = data => {
+  return from(data).pipe(
+    map(val => val),
+    concatAll(),
+    filter(crypto => crypto.askPrice > 200),
+    take(4)
+  );
+};
 
-stock$.subscribe(data => {
+fetchStock$.subscribe(data => {
   stock.innerHTML = "";
-  from(data)
-    .pipe(
-      map(val => val),
-      concatAll(),
-      filter(crypto => crypto.askPrice > 200),
-      take(4)
-    )
-    .subscribe(res => {
-      stock.innerHTML += makeStock(res);
-    });
+  stock$(data).subscribe(res => {
+    stock.innerHTML += makeStock(res);
+  });
 });
