@@ -1,18 +1,6 @@
 // Import stylesheets
-import { from, interval, Observable } from "rxjs";
-import {
-  debounceTime,
-  distinctUntilChanged,
-  mapTo,
-  map,
-  concatAll,
-  take,
-  concatMap,
-  filter,
-  switchMap,
-  delay,
-  concatMapTo
-} from "rxjs/operators";
+import { from, Observable } from "rxjs";
+import { map, concatAll, take, filter } from "rxjs/operators";
 
 const stock = document.querySelector(".stock");
 
@@ -30,26 +18,22 @@ const getData = () =>
 const stock$ = Observable.create(observer => {
   setInterval(() => {
     observer.next(getData());
-  }, 4000);
+  }, 10000);
 });
 
 stock$.pipe(
   map(data => {
-    return from(data).pipe(map(res => res));
+    return from(data);
   })
 );
 
 stock$.subscribe(data => {
-  if (stock.querySelectorAll("p.price")) {
-    for (let i = 0; i < stock.querySelectorAll("p.price").length; i++) {
-      stock.querySelectorAll("p.price")[i].textContent = "";
-      stock.querySelectorAll("h3")[i].textContent = "";
-    }
-  }
+  stock.innerHTML = "";
   from(data)
     .pipe(
       map(val => val),
       concatAll(),
+      filter(crypto => crypto.askPrice > 200),
       take(4)
     )
     .subscribe(res => {
