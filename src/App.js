@@ -8,7 +8,7 @@ const fetchData = async () => {
 
 const useFetchCoins = (timer) => {
   const [cryptos, updateCryptos] = useState([]);
-
+  
   fetchData().then(res => {
     if(!cryptos.length) {
       //when the page load for the first time, we should update the state imediatelly
@@ -20,13 +20,15 @@ const useFetchCoins = (timer) => {
       },timer);
     }
   });
-
+  
   return cryptos;
 };
 
 export default function App() {
   const cryptos = useFetchCoins(10000);
-
+  useEffect(()=>{
+    console.log(cryptos);
+  })
   return (
     <div>
       <ul className="stock-list">
