@@ -5,8 +5,7 @@ import {
 import {
   concatAll,
   filter,
-  switchMap,
-  scan,distinct,
+  flatMap,
   map
 } from 'rxjs/operators';
 
@@ -16,7 +15,7 @@ const fetchData = () => {
 
 export const fetchAndReload$ = timer(0, 5000)
   .pipe(
-    switchMap(() => from(fetchData())),
+    flatMap(() => from(fetchData())),
     concatAll(),
     filter(coin => coin.askPrice > 50),
     map(({symbol, askPrice})=>({symbol, askPrice}))
