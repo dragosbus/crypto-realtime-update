@@ -25,10 +25,22 @@ const useFetchCoins = (timer) => {
 };
 
 export default function App() {
-  const cryptos = useFetchCoins(10000);
-  useEffect(()=>{
-    console.log(cryptos);
-  })
+  const [timer, setTimer] = useState(10000);
+  const cryptos = useFetchCoins(timer);
+
+  const onChangeTimer = btnClicked => {
+    //get the text of the button clicked
+    let time = btnClicked.target.textContent;
+    //get the number from the text
+    time = time.substr(0, time.indexOf('min'));
+
+    setTimer(+(time) * 1000 * 60);
+  };
+
+  useEffect(prevState=>{
+    console.log(timer)
+  }, [timer])
+
   return (
     <div>
       <ul className="stock-list">
@@ -41,6 +53,11 @@ export default function App() {
           );
         })}
       </ul>
+      <div>
+        <button onClick={e=>onChangeTimer(e)}>1min</button>
+        <button onClick={e=>onChangeTimer(e)}>5min</button>
+        <button onClick={e=>onChangeTimer(e)}>10min</button>
+      </div>
     </div>
   );
 }
