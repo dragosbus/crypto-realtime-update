@@ -34,11 +34,13 @@ export default function App() {
     //get the number from the text
     time = time.substr(0, time.indexOf('min'));
 
-    useEffect(()=>{
-      setTimer(+(time) * 1000 * 60);
-    }, [time])
-    
+    setTimer(+(time) * 1000 * 60);
   };
+
+  useEffect(()=>{
+    setTimer(timer);
+    console.log(timer, cryptos);
+  }, [timer])
 
   return (
     <div>
